@@ -4,7 +4,7 @@ import { createToken } from "../../util/hashing";
 
 @Entity()
 export class User extends BaseEntity {
-    @PrimaryColumn()
+    @PrimaryColumn({type: "varchar"})
     id: string;
 
     @Column()
