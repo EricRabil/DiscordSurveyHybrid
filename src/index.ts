@@ -15,5 +15,5 @@ Framework.client.connect().then(() => {
     logger.info("Client has started");
     Framework.http.start().then(() => {
         logger.info("HTTP has started");
-    })
+    });
 });
