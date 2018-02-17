@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "rm -rf lib && tsc -p . && cd ./src && find .  -name '*.pug' -exec rsync -R {} ../lib \\; && cd .."
+    "build": "rm -rf lib && tsc -p .; cd ./src && find .  -name '*.pug' -exec rsync -R {} ../lib \\;; cd .."
   },
   "repository": {
     "type": "git",
@@ -23,7 +23,7 @@
     "discord.js": "^11.3.0",
     "express": "^4.16.2",
     "fs-extra": "^5.0.0",
-    "mongodb": "^3.0.2",
+    "mongodb": "2.2.33",
     "nobi": "^0.0.1",
     "optimist": "^0.6.1",
     "pug": "^2.0.0-rc.4",

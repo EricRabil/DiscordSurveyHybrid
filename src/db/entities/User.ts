@@ -1,10 +1,13 @@
 import * as crypto from "crypto";
-import { Column, Entity, PrimaryColumn, BaseEntity } from "typeorm";
+import { Column, Entity, PrimaryColumn, BaseEntity, ObjectIdColumn } from "typeorm";
 import { createToken } from "../../util/hashing";
 
 @Entity()
 export class User extends BaseEntity {
     @PrimaryColumn({type: "varchar"})
+    snowflake: string;
+
+    @ObjectIdColumn()
     id: string;
 
     @Column()
@@ -30,12 +33,12 @@ export class User extends BaseEntity {
     }
 
     static async getOrCreateUser(userID: string): Promise<User> {
-        return (await User.findOne({id: userID})) || (await User.createUser(userID));
+        return (await User.findOne({snowflake: userID})) || (await User.createUser(userID));
     }
 
     static async createUser(userID: string): Promise<User> {
         const user = new User();
-        user.id = userID;
+        user.snowflake = userID;
         user.salt = crypto.randomBytes(16).toString();
         await user.save();
         return user;

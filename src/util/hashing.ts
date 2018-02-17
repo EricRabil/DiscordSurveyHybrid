@@ -32,7 +32,7 @@ export async function decodeToken(token: string): Promise<DecodedToken | null> {
     if (isNaN(timestamp.getTime())) {
         return null;
     }
-    const user = await User.findOneById(snowflake);
+    const user = await User.findOne({snowflake: snowflake});
     if (!user) {
         return null;
     }
@@ -60,10 +60,11 @@ export async function decodeToken(token: string): Promise<DecodedToken | null> {
  */
 export async function getUser(token: string): Promise<User | undefined> {
     const parsedToken = await decodeToken(token);
+    console.log(parsedToken);
     if (parsedToken === null) {
         return undefined;
     }
-    return await User.findOne({id: parsedToken.snowflake});
+    return await User.findOne({snowflake: parsedToken.snowflake});
 }
 
 /**
@@ -73,13 +74,13 @@ export async function getUser(token: string): Promise<User | undefined> {
  */
 export async function createToken(user: User | string): Promise<string> {
     if (typeof user === "string") {
-        const _user = await User.findOneById(user);
+        const _user = await User.findOne({snowflake: user});
         if (!_user) {
             throw new Error("Unknown user.");
         }
         user = _user;
     }
-    const snowflakeBase64 = encodeBase64(user.id);
+    const snowflakeBase64 = encodeBase64(user.snowflake);
     const timestampBase64 = encodeBase64(Date.now() + "");
     const signer = nobi(user.salt);
     const partialToken: string = `${snowflakeBase64}.${timestampBase64}`;

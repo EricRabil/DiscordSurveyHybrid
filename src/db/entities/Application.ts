@@ -1,8 +1,11 @@
-import { Entity, BaseEntity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, ObjectIdColumn } from "typeorm";
 
 export class Field {
     @Column()
     prompt: string;
+
+    @ObjectIdColumn()
+    id: string;
 
     @Column()
     type: string;

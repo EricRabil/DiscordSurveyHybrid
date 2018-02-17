@@ -1,8 +1,8 @@
+import { connect } from "./db/connection";
 import { ExpressServer } from "./http";
 import { Bot } from "./discord";
 import { Config } from "./config";
 import { logger } from "./util/logger";
-import { connect } from "./db/connection";
 
 export const Framework: {
     http: ExpressServer,

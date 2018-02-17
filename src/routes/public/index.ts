@@ -7,7 +7,7 @@ export = {
         method: "get"
     },
     async handler(req, res) {
-        if (!req.cookies.token) {
+        if (!req.data.authenticated) {
             res.send("not logged in");
             return;
         }
