@@ -8,6 +8,8 @@ import * as path from "path";
 import { logger } from "../util/logger";
 import { getUser } from "../util/hashing";
 
+const cookieParser = require("cookie-parser");
+
 const isRoute = (route: any): route is Route => {
     return typeof route === "object"
         && typeof route.opts === "object"
@@ -60,13 +62,14 @@ export class ExpressServer {
     private async initRoutes() {
         this.server.use(cors());
         this.server.use(bodyParser.json());
+        this.server.use(cookieParser());
         this.server.use(async (req, res, next) => {
             const eReq: ExtraRequest = req as any;
             eReq.data = {
                 authenticated: false,
                 user: null as any
             };
-            let authorization = req.headers.authorization || req.headers.Authorization;
+            let authorization = req.headers.authorization || req.headers.Authorization || req.cookies.token;
             if (authorization) {
                 authorization = typeof authorization === "string" ? authorization : authorization[0];
                 const user = await getUser(authorization);

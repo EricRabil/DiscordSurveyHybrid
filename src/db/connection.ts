@@ -15,5 +15,6 @@ export async function connect() {
         database: Config.database.database,
         entities: [entityDir],
         logging: false,
+        synchronize: true
     });
 }

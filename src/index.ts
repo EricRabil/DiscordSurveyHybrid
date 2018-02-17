@@ -2,6 +2,7 @@ import { ExpressServer } from "./http";
 import { Bot } from "./discord";
 import { Config } from "./config";
 import { logger } from "./util/logger";
+import { connect } from "./db/connection";
 
 export const Framework: {
     http: ExpressServer,
@@ -10,10 +11,7 @@ export const Framework: {
     http: new ExpressServer(Config.http.port),
     client: new Bot(Config.bot.token, Config.bot.prefix)
 };
-
-Framework.client.connect().then(() => {
-    logger.info("Client has started");
-    Framework.http.start().then(() => {
-        logger.info("HTTP has started");
-    });
-});
+connect()
+    .then(() => Framework.client.connect())
+    .then(() => Framework.http.start())
+    .then(() => logger.info("Ready to go!"));

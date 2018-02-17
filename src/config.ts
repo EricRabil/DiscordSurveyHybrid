@@ -23,10 +23,16 @@ let appConfig = deepmerge({
     },
     bot: {
         prefix: "!",
-        token: "no-token"
+        token: "no-token",
+        secret: "no-secret"
     },
     http: {
         port: 3000
+    },
+    auth: {
+        authURL: "https://discordapp.com/api/oauth2/authorize?client_id=327921877945155585&permissions=0&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fapi%2Fv0%2Fauth%2Flogin&response_type=code&scope=identify%20email%20guilds",
+        enforceGuildRequirement: false,
+        requiredGuild: null
     },
     secret: "very-secret"
 }, configFile as {});
@@ -42,7 +48,8 @@ appConfig = deepmerge(appConfig, {
     },
     bot: {
         prefix: options.botPrefix || appConfig.bot.prefix,
-        token: options.botToken || appConfig.bot.token
+        token: options.botToken || appConfig.bot.token,
+        secret: options.botSecret || appConfig.bot.secret
     },
     http: {
         port: options.httpPort || appConfig.http.port

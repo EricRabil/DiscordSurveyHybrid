@@ -1,4 +1,5 @@
 import { Route } from "../../http/types/route";
+import { Config } from "../../config";
 
 export = {
     opts: {
@@ -6,6 +7,10 @@ export = {
         method: "get"
     },
     async handler(req, res) {
-        res.render("index");
+        if (!req.cookies.token) {
+            res.send("not logged in");
+            return;
+        }
+        res.send("logged in");
     }
 } as Route;

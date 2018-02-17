@@ -63,7 +63,7 @@ export async function getUser(token: string): Promise<User | undefined> {
     if (parsedToken === null) {
         return undefined;
     }
-    return await User.findOneById(parsedToken.snowflake);
+    return await User.findOne({id: parsedToken.snowflake});
 }
 
 /**

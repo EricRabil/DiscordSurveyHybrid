@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/EricRabil/JailbreakModApplications#readme",
   "dependencies": {
+    "cookie-parser": "^1.4.3",
     "cors": "^2.8.4",
     "deepmerge": "^2.0.1",
     "discord.js": "^11.3.0",
@@ -27,6 +28,8 @@
     "optimist": "^0.6.1",
     "pug": "^2.0.0-rc.4",
     "reflect-metadata": "^0.1.12",
+    "request": "^2.83.0",
+    "request-promise": "^4.2.2",
     "typeorm": "^0.1.12",
     "winston": "^2.4.0"
   },
@@ -37,6 +40,8 @@
     "@types/fs-extra": "^5.0.0",
     "@types/node": "^9.4.6",
     "@types/optimist": "^0.0.29",
+    "@types/request": "^2.47.0",
+    "@types/request-promise": "^4.1.41",
     "@types/winston": "^2.3.8"
   }
 }
