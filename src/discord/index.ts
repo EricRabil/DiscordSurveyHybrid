@@ -3,7 +3,7 @@ import { EventEmitter } from "events";
 
 export interface MessageEvent {
     delete(): Promise<void>;
-    reply(content: string, options: MessageOptions | RichEmbed | Attachment): Promise<void>;
+    reply(content: string, options?: MessageOptions | RichEmbed | Attachment): Promise<void>;
     success(): Promise<void>;
     command: string;
     args: string[];
