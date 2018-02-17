@@ -34,6 +34,60 @@ let appConfig = deepmerge({
         enforceGuildRequirement: false,
         requiredGuild: null
     },
+    fields: [
+        {
+            type: "text",
+            label: "Discord Username",
+            prefill: "username",
+            userEntryEnabled: false,
+            submitToServer: false
+        },
+        {
+            type: "text",
+            label: "Discord Discriminator",
+            prefill: "discriminator",
+            userEntryEnabled: false,
+            submitToServer: false
+        },
+        {
+            type: "text",
+            label: "E-Mail",
+            prefill: "email",
+            userEntryEnabled: false,
+            submitToServer: false
+        },
+        {
+            type: "text",
+            label: "Your Name",
+            id: "name"
+        },
+        {
+            type: "dropdown",
+            label: "What position are you applying for?",
+            choices: [
+                "Moderator",
+                "Administrator"
+            ],
+            id: "position",
+        },
+        {
+            type: "checkbox",
+            label: "Are you a developer?",
+            id: "developer"
+        },
+        {
+            type: "radio",
+            label: "How long have you been in the jailbreak community?",
+            choices: [
+                "Less than a month",
+                "1 Month",
+                "6 Months",
+                "1 Year",
+                "More than a year"
+            ],
+            id: "experience"
+        }
+    ],
     secret: "very-secret"
 }, configFile as {});
 

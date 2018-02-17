@@ -58,6 +58,6 @@ export = {
 
         const token = await user.createToken();
         res.cookie('token', token);
-        res.json({success: true});
+        res.redirect("/");
     }
 } as Route;

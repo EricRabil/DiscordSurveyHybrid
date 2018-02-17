@@ -60,7 +60,6 @@ export async function decodeToken(token: string): Promise<DecodedToken | null> {
  */
 export async function getUser(token: string): Promise<User | undefined> {
     const parsedToken = await decodeToken(token);
-    console.log(parsedToken);
     if (parsedToken === null) {
         return undefined;
     }

@@ -8,9 +8,9 @@ export = {
     },
     async handler(req, res) {
         if (!req.data.authenticated) {
-            res.send("not logged in");
+            res.redirect(Config.auth.authURL);
             return;
         }
-        res.send("logged in");
+        res.render("index");
     }
 } as Route;
