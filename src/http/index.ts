@@ -38,7 +38,10 @@ export class ExpressServer {
             await this.stop();
         }
         this.server = express();
+        this.server.set("views", path.join(process.cwd(), "views"));
+        this.server.set("view engine", "pug");
         this._server = this.server.listen(this.port);
+        await this.initRoutes();
     }
 
     public stop(): Promise<void> {
@@ -107,6 +110,9 @@ export class ExpressServer {
     }
 
     private async loadFile(filePath: string): Promise<void> {
+        if (!filePath.endsWith(".js")) {
+            return;
+        }
         let rawFile: any = require(filePath);
         if (Array.isArray(rawFile)) {
             const recursivePromises: Array<Promise<void>> = [];
