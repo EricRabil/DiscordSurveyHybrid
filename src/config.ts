@@ -14,12 +14,12 @@ const configFile = fs.existsSync(configPath) ? require(configPath) : {};
 
 let appConfig = deepmerge({
     database: {
-        driver: "postgres",
+        driver: "mongodb",
         host: "localhost",
-        port: 5432,
-        username: "root",
-        password: "admin",
-        database: "litecord",
+        port: 27017,
+        username: null,
+        password: null,
+        database: "jbmodapps",
     },
     bot: {
         prefix: "!",
