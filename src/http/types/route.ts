@@ -38,5 +38,9 @@ export interface Route {
     /**
      * The actual handler for this route
      */
-    handler: RouteHandler;
+    handler?: RouteHandler;
+    /**
+     * Just render a view instead of calling a handler
+    */
+    render?: string;
 }

@@ -29,6 +29,12 @@ let appConfig = deepmerge({
     http: {
         port: 3000
     },
+    api: {
+        allowMultiSubmission: false,
+        multiSubmissionBehavior: {
+            editOriginalSubmission: false
+        }
+    },
     auth: {
         authURL: "https://discordapp.com/api/oauth2/authorize?client_id=327921877945155585&permissions=0&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fapi%2Fv0%2Fauth%2Flogin&response_type=code&scope=identify%20email%20guilds",
         enforceGuildRequirement: false,
@@ -40,21 +46,24 @@ let appConfig = deepmerge({
             label: "Discord Username",
             prefill: "username",
             userEntryEnabled: false,
-            submitToServer: false
+            submitToServer: false,
+            id: "username"
         },
         {
             type: "text",
             label: "Discord Discriminator",
             prefill: "discriminator",
             userEntryEnabled: false,
-            submitToServer: false
+            submitToServer: false,
+            id: "discrim"
         },
         {
             type: "text",
             label: "E-Mail",
             prefill: "email",
             userEntryEnabled: false,
-            submitToServer: false
+            submitToServer: false,
+            id: "email"
         },
         {
             type: "text",
@@ -88,7 +97,10 @@ let appConfig = deepmerge({
             id: "experience"
         }
     ],
-    secret: "very-secret"
+    secret: "very-secret",
+    meta: {
+        siteName: "Applications"
+    }
 }, configFile as {});
 
 appConfig = deepmerge(appConfig, {

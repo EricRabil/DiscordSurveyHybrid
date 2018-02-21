@@ -6,11 +6,5 @@ export = {
         path: "/",
         method: "get"
     },
-    async handler(req, res) {
-        if (!req.data.authenticated) {
-            res.redirect(Config.auth.authURL);
-            return;
-        }
-        res.render("index");
-    }
+    render: "index"
 } as Route;

@@ -1,4 +1,4 @@
-import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, ObjectIdColumn } from "typeorm";
+import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, ObjectIdColumn, CreateDateColumn } from "typeorm";
 
 export class Field {
     @Column()
@@ -11,6 +11,9 @@ export class Field {
     type: string;
 
     @Column()
+    formID: string;
+
+    @Column()
     response: string | boolean | number;
 }
 
@@ -21,6 +24,12 @@ export class Application extends BaseEntity {
 
     @Column()
     user: string;
+
+    @Column()
+    created: Date;
+
+    @CreateDateColumn()
+    updated: Date;
 
     @Column(type => Field)
     responses: Field[];

@@ -7,6 +7,7 @@ import * as fs from "fs-extra";
 import * as path from "path";
 import { logger } from "../util/logger";
 import { getUser } from "../util/hashing";
+import { Config } from "../config";
 
 const cookieParser = require("cookie-parser");
 
@@ -21,11 +22,14 @@ const isRoute = (route: any): route is Route => {
             || route.opts.method === "options"
             || route.opts.method === "patch"
             || route.opts.method === "delete"
-        )
-        && typeof route.handler === "function";
+        );
 };
 
 const routesPath = path.join(__dirname, "..", "routes");
+
+const prefilledTemplateData = {
+    siteName: Config.meta.siteName
+};
 
 export class ExpressServer {
 
@@ -78,11 +82,32 @@ export class ExpressServer {
                     eReq.data.authenticated = true;
                 }
             }
+            if (!eReq.data.authenticated) {
+                res.redirect(Config.auth.authURL);
+                return;
+            }
+            const _render = res.render.bind(res);
+            res.render = (view: string, options?: (Object | Function), callback?: any) => {
+                const layoutData = {
+                    user: eReq.data.user,
+                    ...prefilledTemplateData
+                };
+                if (!options || typeof options === "function") {
+                    _render(view, layoutData, options);
+                    return;
+                };
+                options = {
+                    ...layoutData,
+                    ...options
+                };
+                _render(view, options, callback);
+            }
             next();
         });
         await this.loadDirectory(routesPath);
+        this.server.use("/public", express.static(path.join(process.cwd(), "public")));
         this.server.use((req, res, next) => {
-            res.json({code: 404, message: "404: Not found."});
+            res.status(404).json({code: 404, message: "404: Not found."});
         });
     }
 
@@ -92,6 +117,15 @@ export class ExpressServer {
             return;
         }
         logger.debug(`[ROUTE] (${route.opts.method.toUpperCase()}) ${route.opts.path}`);
+        if (!route.handler) {
+            if (!route.render) {
+                return;
+            }
+            const {render} = route;
+            route.handler = (req, res) => {
+                res.render(render);
+            };
+        }
         if (!route.opts.guards) {
             this.server[route.opts.method](route.opts.path, route.handler.bind(route));
             return;
@@ -102,7 +136,7 @@ export class ExpressServer {
             const next: () => void = () => {
                 const guard = (route.opts.guards as RouteHandler[])[currentIndex++];
                 if (!guard || previous === guard) {
-                    route.handler((req as any), (res as any), () => null);
+                    (route.handler as any)((req as any), (res as any), () => null);
                 } else {
                     previous = guard;
                     guard(req as any, res as any, next);
