@@ -66,6 +66,13 @@ export class ExpressServer {
     private async initRoutes() {
         this.server.use(cors());
         this.server.use(bodyParser.json());
+        this.server.use((error: Error, req: any, res: express.Response, next: any) => {
+            if (error instanceof SyntaxError) {
+              res.status(400).json({code: 40003, message: "Invalid JSON body."});
+            } else {
+              next();
+            }
+        });
         this.server.use(cookieParser());
         this.server.use(async (req, res, next) => {
             const eReq: ExtraRequest = req as any;

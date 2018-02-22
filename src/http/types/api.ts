@@ -22,6 +22,14 @@ export interface ClientField {
     type: "text" | "dropdown" | "checkbox" | "radio" | "password" | "email";
     label: string;
     id: string;
+    help?: string;
+    placeholder?: string;
+    choices?: string[];
+}
+
+export interface DropdownField extends ClientField {
+    type: "dropdown" | "radio";
+    choices: string[];
 }
 
 export interface ReadOnlyClientField extends ClientField {

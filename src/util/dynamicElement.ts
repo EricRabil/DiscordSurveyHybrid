@@ -42,6 +42,9 @@ function validateChoice(field: ChoiceValueField, data: string): boolean {
 }
 
 export const validate = (key: string, value: string) => {
+    if (!value) {
+        return false;
+    }
     const anyValueField = anyValueFields[key];
     const choiceValueField = choiceValueFields[key];
     return anyValueField ? validateAny(anyValueField, value) : choiceValueField ? validateChoice(choiceValueField, value) : false;

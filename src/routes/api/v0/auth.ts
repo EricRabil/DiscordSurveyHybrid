@@ -5,6 +5,7 @@ import * as rp from "request-promise";
 import { inspect } from "util";
 import { User } from "../../../db/entities/User";
 import { AuthorizedGuard } from "../../../guards";
+import { AboutMeRequest } from "../../../http/types/api";
 
 interface AuthentiationGrant {
     access_token: string;

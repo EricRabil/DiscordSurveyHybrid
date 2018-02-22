@@ -26,7 +26,7 @@ export class Application extends BaseEntity {
     user: string;
 
     @Column()
-    created: Date;
+    created: Date = new Date();
 
     @CreateDateColumn()
     updated: Date;

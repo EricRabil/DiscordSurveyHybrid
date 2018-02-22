@@ -8,7 +8,7 @@ import { APIFormError, APIBasicError, FormCreateSuccess, FieldRequest } from "..
 async function computeErrors(submission: {[key: string]: any}) {
     const errors: {[key: string]: string[]} = {};
     let errorCount: number = 0;
-    for (const field in submission) {
+    for (const field in allFields) {
         if (!validate(field, submission[field])) {
             errorCount++;
             errors[field] = [getError(field)];

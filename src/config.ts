@@ -12,6 +12,10 @@ const configFile = fs.existsSync(configPath) ? require(configPath) : {};
  * Default values are generated, then overridden by the configuration file, then overriden by CLI opts
  */
 
+function overwriteMerge(destinationArray: any[], sourceArray: any[], options: any) {
+	return sourceArray
+}
+
 let appConfig = deepmerge({
     database: {
         driver: "mongodb",
@@ -101,7 +105,7 @@ let appConfig = deepmerge({
     meta: {
         siteName: "Applications"
     }
-}, configFile as {});
+}, configFile as {}, {arrayMerge: overwriteMerge});
 
 appConfig = deepmerge(appConfig, {
     database: {
