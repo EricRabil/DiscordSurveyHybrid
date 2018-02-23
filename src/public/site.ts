@@ -61,6 +61,21 @@ import { ClientField, FieldRequest, ReadOnlyClientField, AboutMeRequest, FormCre
     }
 
     const insert = (field: ClientField) => {
+        const insert = (element: HTMLElement, classOverrides?: string[], appendTo: HTMLElement = inputElementWrapper) => {
+            element.classList.add(...(classOverrides || ["form-control"]));
+            if (field.id) {
+                element.id = field.id;
+            }
+            appendTo.appendChild(element);
+        };
+        
+        // Handle non-form field first
+        if (field.type == "seperator") {
+            const seperatorElement = document.createElement("hr");
+            insert(seperatorElement, [], root);     
+            return;   
+        }
+
         const formGroup = document.createElement("div");
         formGroup.classList.add("form-group", "row");
         root.appendChild(formGroup);
@@ -74,14 +89,6 @@ import { ClientField, FieldRequest, ReadOnlyClientField, AboutMeRequest, FormCre
         const inputElementWrapper = document.createElement("div");
         inputElementWrapper.classList.add("col-sm-10");
         formGroup.appendChild(inputElementWrapper);
-
-        const insert = (element: HTMLElement, classOverrides?: string[]) => {
-            element.classList.add(...(classOverrides || ["form-control"]));
-            if (field.id) {
-                element.id = field.id;
-            }
-            inputElementWrapper.appendChild(element);
-        };
 
         if (field.type === "text" || field.type === "password" || field.type === "email") {
             const inputElement = document.createElement("input");
@@ -101,7 +108,7 @@ import { ClientField, FieldRequest, ReadOnlyClientField, AboutMeRequest, FormCre
                 optionElement.innerText = choice;
                 inputElement.appendChild(optionElement);
             }
-            insert(inputElement);
+            insert(inputElement);   
         } else if (field.type === "checkbox") {
             const checkWrapper = document.createElement("div");
             checkWrapper.classList.add("form-check");
@@ -155,7 +162,8 @@ import { ClientField, FieldRequest, ReadOnlyClientField, AboutMeRequest, FormCre
         insert(field);
     }
 
-    const submittableFields: ClientField[] = fields.filter(field => (field as any).submitToServer !== false);
+    const submittableFields: ClientField[] = fields.filter(field => (field as any).submitToServer !== false && (field as any).type !== 'separator');
+
     const simpleValueFields: ClientField[] = submittableFields.filter(field => field.type === "text" || field.type === "dropdown" || field.type === "password" || field.type === "email");
     const checkboxFields: ClientField[] = submittableFields.filter(field => field.type === "checkbox");
     const radioFields: ClientField[] = submittableFields.filter(field => field.type === "radio");
@@ -214,9 +222,10 @@ import { ClientField, FieldRequest, ReadOnlyClientField, AboutMeRequest, FormCre
                 for (const field in fields) {
                     const [error] = fields[field];
                     // <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                    // TODO: Refactor to use https://getbootstrap.com/docs/4.0/components/forms/#server-side
                     const help = document.createElement("small");
                     help.id = `${field}ErrorHelp`;
-                    help.classList.add("form-text", "text-muted");
+                    help.classList.add("form-text", "text-danger");
                     help.innerText = error;
 
                     const basicElement: HTMLElement | null = document.getElementById(field);

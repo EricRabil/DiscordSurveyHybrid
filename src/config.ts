@@ -80,6 +80,12 @@ let appConfig = deepmerge({
             id: "name"
         },
         {
+            type: "seperator",
+            label: null,
+            submitToServer: false,
+            id: "seperator-1"
+        },
+        {
             type: "dropdown",
             label: "What position are you applying for?",
             choices: [
@@ -108,7 +114,8 @@ let appConfig = deepmerge({
     ],
     secret: "very-secret",
     meta: {
-        siteName: "Applications"
+        siteName: "Applications",
+        leadText: "Apply for the trusted developer role, and get perks."
     }
 }, configFile as {}, {arrayMerge: overwriteMerge});
 

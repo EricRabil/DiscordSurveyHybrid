@@ -20,7 +20,7 @@ export interface APIFormError {
 }
 
 export interface ClientField {
-    type: "text" | "dropdown" | "checkbox" | "radio" | "password" | "email";
+    type: "text" | "largetext" | "dropdown" | "checkbox" | "radio" | "password" | "email" | "seperator";
     label: string;
     id: string;
     help?: string;

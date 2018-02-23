@@ -29,7 +29,9 @@ const isRoute = (route: any): route is Route => {
 const routesPath = path.join(__dirname, "..", "routes");
 
 const prefilledTemplateData = {
-    siteName: Config.meta.siteName
+    siteName: Config.meta.siteName,
+    leadText: Config.meta.leadText,
+    config: Config
 };
 
 export class ExpressServer {
@@ -45,7 +47,7 @@ export class ExpressServer {
             await this.stop();
         }
         this.server = express();
-        this.server.set("views", path.join(process.cwd(), "views"));
+        this.server.set("views", path.join(process.cwd(), "lib", "views"));
         this.server.set("view engine", "pug");
         this._server = this.server.listen(this.port);
         await this.initRoutes();
@@ -90,7 +92,7 @@ export class ExpressServer {
                     eReq.data.authenticated = true;
                 }
             }
-            if (!eReq.data.authenticated) {
+            if (!eReq.data.authenticated && eReq.path != "/api/v0/auth/login") {
                 res.redirect(Config.auth.authURL);
                 return;
             }
@@ -113,7 +115,7 @@ export class ExpressServer {
             next();
         });
         await loadDirectory(routesPath, this.loadRoute.bind(this));
-        this.server.use("/public", express.static(path.join(process.cwd(), "public")));
+        this.server.use("/public", express.static(path.join(process.cwd(), "lib", "public")));
         this.server.use((req, res, next) => {
             res.status(404).json({code: 404, message: "404: Not found."});
         });

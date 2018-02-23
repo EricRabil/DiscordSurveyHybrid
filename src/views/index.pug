@@ -2,10 +2,14 @@ extends ./layout
 block dependencies
     - css = [];
 block content
-    div(style="padding-top: 20px").container
-        div.card
-            div.card-header Apply today!
-            div.card-body
-                form(id="formRoot")
-                    span(id="dynamicRoot")
-                    button(type="submit", id="formSubmitButton").btn.btn-primary Submit
+    div.vertical-center
+        div.container(id="container")
+            header.bg-white
+                h1.h1.mb-3 
+                    | Hello, #{user.username}
+                    span.text-muted.small ##{user.discriminator}
+            form(id="formRoot")
+                p.intro #{leadText}
+                hr
+                span(id="dynamicRoot")
+                button(type="submit", id="formSubmitButton").btn.btn-primary.btn-lg Submit

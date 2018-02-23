@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "rm -rf lib && tsc -p .; cd ./src && find .  -name '*.pug' -exec rsync -R {} ../lib \\;; cd .."
+    "build": "rm -rf lib && tsc -p .; cd ./src && rsync -a --exclude='*.ts' public/* ../lib/public && find .  -name '*.pug' -exec rsync -R {} ../lib \\;; cd .."
   },
   "repository": {
     "type": "git",
