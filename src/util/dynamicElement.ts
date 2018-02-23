@@ -13,6 +13,7 @@ export interface AnyValueField {
     id: string;
     readableRequirements: string;
     validator?: RegExp;
+    submitToServer?: boolean;
 }
 
 export interface ChoiceValueField extends Omit<AnyValueField, "validator"> {
@@ -31,6 +32,9 @@ realFields.filter(field => !!field.choices).forEach(field => {
 });
 
 function validateAny(field: AnyValueField, data: string): boolean {
+    if (field.submitToServer === false) {
+        return true;
+    }
     if (field.validator) {
         return !!field.validator.exec(data);
     }
@@ -38,6 +42,9 @@ function validateAny(field: AnyValueField, data: string): boolean {
 }
 
 function validateChoice(field: ChoiceValueField, data: string): boolean {
+    if (field.submitToServer === false) {
+        return true;
+    }
     return field.choices.includes(data.toLowerCase());
 }
 
