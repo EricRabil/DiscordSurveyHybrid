@@ -1,6 +1,6 @@
 import { Config } from "../config";
 
-const realFields = Config.fields.filter(field => !!field.id);
+const realFields = Config.fields.filter(field => !!field.id && field.submitToServer !== false);
 export const allFields: {[key: string]: AnyValueField | ChoiceValueField | undefined} = {};
 realFields.forEach(field => allFields[field.id as string] = field as any);
 

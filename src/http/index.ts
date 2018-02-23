@@ -92,10 +92,6 @@ export class ExpressServer {
                     eReq.data.authenticated = true;
                 }
             }
-            if (!eReq.data.authenticated && eReq.path != "/api/v0/auth/login") {
-                res.redirect(Config.auth.authURL);
-                return;
-            }
             const _render = res.render.bind(res);
             res.render = (view: string, options?: (Object | Function), callback?: any) => {
                 const layoutData = {

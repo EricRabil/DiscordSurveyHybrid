@@ -38,6 +38,10 @@ export interface UserMetadata {
     email: string;
 }
 
+export interface GuildsResponse {
+    id: string;
+}
+
 export interface DropdownField extends ClientField {
     type: "dropdown" | "radio";
     choices: string[];

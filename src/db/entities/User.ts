@@ -4,7 +4,7 @@ import { createToken } from "../../util/hashing";
 import { Application } from "./Application";
 import { Config } from "../../config";
 import {User as DUser} from "discord.js";
-import { AboutMeRequest, UserMetadata } from "../../http/types/api";
+import { AboutMeRequest, UserMetadata, GuildsResponse } from "../../http/types/api";
 
 @Entity()
 export class User extends BaseEntity {
@@ -19,6 +19,9 @@ export class User extends BaseEntity {
 
     @Column()
     username: string;
+
+    @Column()
+    guilds: string[];
 
     @Column()
     verified: boolean;
@@ -72,6 +75,10 @@ export class User extends BaseEntity {
         this.discriminator = user.discriminator;
         this.email = user.email;
         this.avatar = user.avatar;
+    }
+
+    public mergeGuilds(guilds: string[]): void {
+        this.guilds = guilds;
     }
 
     static async getOrCreateUser(userID: string): Promise<User> {

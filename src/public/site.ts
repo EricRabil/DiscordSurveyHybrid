@@ -171,12 +171,6 @@ import { ClientField, FieldRequest, ReadOnlyClientField, AboutMeRequest, FormCre
     const helpElements: HTMLElement[] = [];
 
     const submitButton: HTMLButtonElement = document.getElementById("formSubmitButton") as HTMLButtonElement;
-    
-    if (!me.canSubmit) {
-        submitButton.disabled = true;
-        submitButton.classList.add("disabled");
-        setTimeout(() => alert("Thanks for applying! You can no longer make submissions. We'll get back to you as soon as we can!"), 1);
-    }
 
     submitButton.onclick = async (event) => {
         helpElements.forEach(element => element.remove());

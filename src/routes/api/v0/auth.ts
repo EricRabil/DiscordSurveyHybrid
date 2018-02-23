@@ -5,7 +5,7 @@ import * as rp from "request-promise";
 import { inspect } from "util";
 import { User } from "../../../db/entities/User";
 import { AuthorizedGuard } from "../../../guards";
-import { AboutMeRequest, UserMetadata } from "../../../http/types/api";
+import { AboutMeRequest, UserMetadata, GuildsResponse } from "../../../http/types/api";
 
 interface AuthentiationGrant {
     access_token: string;
@@ -41,8 +41,12 @@ export = [
             const restToken = `${response.token_type} ${response.access_token}`;
             const aboutYou: UserMetadata = JSON.parse(await rp.get("https://discordapp.com/api/v6/users/@me", {headers: {Authorization: restToken}}));
             
+            const guilds: GuildsResponse[] = JSON.parse(await rp.get("https://discordapp.com/api/v6/users/@me/guilds", {headers: {Authorization: restToken}}));
+            const guildIDs = guilds.map(guild => guild.id);
+
             const user = await User.getOrCreateUser(aboutYou.id);
             user.merge(aboutYou);
+            user.mergeGuilds(guildIDs);
             await user.save();
 
             const token = await user.createToken();
@@ -61,8 +65,7 @@ export = [
                 snowflake: req.data.user.snowflake,
                 username: req.data.user.username,
                 discriminator: req.data.user.discriminator,
-                email: req.data.user.email,
-                canSubmit: await req.data.user.canSubmit()
+                email: req.data.user.email
             } as AboutMeRequest);
         }
     }
