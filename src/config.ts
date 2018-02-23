@@ -31,8 +31,8 @@ let appConfig = deepmerge({
         secret: "no-secret",
         notificationChannels: [] as string[],
         managers: {
-            roles: ["392503454477582357"],
-            users: ["163024083364216832"]
+            roles: [],
+            users: []
         }
     },
     http: {
