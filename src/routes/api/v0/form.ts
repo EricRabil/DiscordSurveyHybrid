@@ -82,7 +82,8 @@ export = [
                 res.json({
                     created: application.created.toISOString(),
                     updated: application.updated.toISOString(),
-                    responses: application.responses
+                    responses: application.responses,
+                    canSubmitAgain: await req.data.user.canSubmit()
                 } as FormCreateSuccess);
                 Framework.events.emit("submit", application);
             }

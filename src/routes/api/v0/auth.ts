@@ -61,7 +61,8 @@ export = [
                 snowflake: req.data.user.snowflake,
                 username: req.data.user.username,
                 discriminator: req.data.user.discriminator,
-                email: req.data.user.email
+                email: req.data.user.email,
+                canSubmit: await req.data.user.canSubmit()
             } as AboutMeRequest);
         }
     }

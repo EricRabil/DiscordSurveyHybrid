@@ -4,6 +4,7 @@ export interface FormCreateSuccess {
     created: string;
     updated: string;
     responses: Field[];
+    canSubmitAgain: boolean;
 }
 
 export interface APIBasicError {
@@ -55,4 +56,5 @@ export interface AboutMeRequest {
     username: string;
     discriminator: string;
     email: string;
+    canSubmit: boolean;
 }

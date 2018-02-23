@@ -1,4 +1,4 @@
-import { ClientField, FieldRequest, ReadOnlyClientField, AboutMeRequest } from "../http/types/api";
+import { ClientField, FieldRequest, ReadOnlyClientField, AboutMeRequest, FormCreateSuccess } from "../http/types/api";
 (async function() {
     function getCookie(cookiename: string) {
         var cookiestring=RegExp(""+cookiename+"[^;]+").exec(document.cookie);
@@ -59,8 +59,6 @@ import { ClientField, FieldRequest, ReadOnlyClientField, AboutMeRequest } from "
     const isReadOnlyField: (field: ClientField) => field is ReadOnlyClientField = (field): field is ReadOnlyClientField => {
         return "prefill" in field && "userEntryEnabled" in field && "submitToServer" in field;
     }
-
-
 
     const insert = (field: ClientField) => {
         const formGroup = document.createElement("div");
@@ -165,6 +163,13 @@ import { ClientField, FieldRequest, ReadOnlyClientField, AboutMeRequest } from "
     const helpElements: HTMLElement[] = [];
 
     const submitButton: HTMLButtonElement = document.getElementById("formSubmitButton") as HTMLButtonElement;
+    
+    if (!me.canSubmit) {
+        submitButton.disabled = true;
+        submitButton.classList.add("disabled");
+        setTimeout(() => alert("Thanks for applying! You can no longer make submissions. We'll get back to you as soon as we can!"), 1);
+    }
+
     submitButton.onclick = async (event) => {
         helpElements.forEach(element => element.remove());
         event.stopImmediatePropagation();
@@ -191,7 +196,18 @@ import { ClientField, FieldRequest, ReadOnlyClientField, AboutMeRequest } from "
             submission[element.id] = element.checked;
         }
         try {
-            await request("post", "/api/v0/form/submit", JSON.stringify(submission));
+            const res: FormCreateSuccess = await request("post", "/api/v0/form/submit", JSON.stringify(submission));
+            for (const child of root.children) {
+                child.remove();
+            }
+            for (const field of fields) {
+                insert(field);
+            }
+            if (!res.canSubmitAgain) {
+                submitButton.disabled = true;
+                submitButton.classList.add("disabled");
+                alert("Thanks for applying! You can no longer make submissions. We'll get back to you as soon as we can!");
+            }
         } catch (e) {
             if (e.fields) {
                 const fields: {[key: string]: string[]} = e.fields;
