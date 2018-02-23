@@ -1,0 +1,1 @@
+export const EMBED_ERROR_COLOR = 0xFF7777;

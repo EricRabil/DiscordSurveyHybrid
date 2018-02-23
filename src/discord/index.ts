@@ -1,5 +1,6 @@
 import {Client, Message, MessageOptions, RichEmbed, Attachment, User, GuildMember, TextChannel, DMChannel, Guild} from "discord.js";
 import { EventEmitter } from "events";
+import {User as DBUser} from "../db/entities/User";
 
 export interface MessageEvent {
     delete(): Promise<void>;
@@ -54,15 +55,12 @@ export class Bot extends EventEmitter {
         if (!this.discordClient) {
             return;
         }
-        const existingUser = this.discordClient.users.get(user);
-        if (existingUser) {
-            return existingUser;
+        const dUser = await this.discordClient.fetchUser(user, true);
+        if (!dUser) {
+            return;
         }
-        try {
-            return await this.discordClient.fetchUser(user);
-        } catch (e) {
-            return undefined;
-        }
+        DBUser.updateUser(dUser);
+        return dUser;
     }
 
     private async handleMessage(message: Message) {

@@ -28,7 +28,12 @@ let appConfig = deepmerge({
     bot: {
         prefix: "!",
         token: "no-token",
-        secret: "no-secret"
+        secret: "no-secret",
+        notificationChannels: [] as string[],
+        managers: {
+            roles: ["392503454477582357"],
+            users: ["163024083364216832"]
+        }
     },
     http: {
         port: 3000

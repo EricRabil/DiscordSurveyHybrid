@@ -3,6 +3,8 @@ import { Column, Entity, PrimaryColumn, BaseEntity, ObjectIdColumn } from "typeo
 import { createToken } from "../../util/hashing";
 import { Application } from "./Application";
 import { Config } from "../../config";
+import {User as DUser} from "discord.js";
+import { AboutMeRequest, UserMetadata } from "../../http/types/api";
 
 @Entity()
 export class User extends BaseEntity {
@@ -29,6 +31,9 @@ export class User extends BaseEntity {
 
     @Column()
     email: string;
+
+    @Column()
+    avatar: string;
 
     public createToken(): Promise<string> {
         return createToken(this);
@@ -60,6 +65,15 @@ export class User extends BaseEntity {
         return Application.count({user: this.snowflake});
     }
 
+    public merge(user: UserMetadata): void {
+        this.username = user.username;
+        this.verified = user.verified;
+        this.mfa_enabled = user.mfa_enabled;
+        this.discriminator = user.discriminator;
+        this.email = user.email;
+        this.avatar = user.avatar;
+    }
+
     static async getOrCreateUser(userID: string): Promise<User> {
         return (await User.findOne({snowflake: userID})) || (await User.createUser(userID));
     }
@@ -70,5 +84,13 @@ export class User extends BaseEntity {
         user.salt = crypto.randomBytes(16).toString();
         await user.save();
         return user;
+    }
+
+    static async updateUser(dUser: DUser): Promise<void> {
+        const dbUser = await User.getOrCreateUser(dUser.id);
+        dbUser.username = dUser.username;
+        dbUser.discriminator = dUser.discriminator;
+        dbUser.avatar = dUser.avatar;
+        await dbUser.save();
     }
 }

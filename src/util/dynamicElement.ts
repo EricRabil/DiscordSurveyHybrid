@@ -42,7 +42,7 @@ function validateChoice(field: ChoiceValueField, data: string): boolean {
 }
 
 export const validate = (key: string, value: string) => {
-    if (!value) {
+    if (typeof value === "undefined" || (typeof value === "string" && value.length === 0)) {
         return false;
     }
     const anyValueField = anyValueFields[key];

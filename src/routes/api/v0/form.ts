@@ -4,6 +4,7 @@ import { validate, getError, allFields } from "../../../util/dynamicElement";
 import { AuthorizedGuard } from "../../../guards";
 import { Application, Field } from "../../../db/entities/Application";
 import { APIFormError, APIBasicError, FormCreateSuccess, FieldRequest } from "../../../http/types/api";
+import { Framework } from "../../..";
 
 async function computeErrors(submission: {[key: string]: any}) {
     const errors: {[key: string]: string[]} = {};
@@ -83,6 +84,7 @@ export = [
                     updated: application.updated.toISOString(),
                     responses: application.responses
                 } as FormCreateSuccess);
+                Framework.events.emit("submit", application);
             }
         }
     }

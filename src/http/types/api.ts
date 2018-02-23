@@ -27,6 +27,16 @@ export interface ClientField {
     choices?: string[];
 }
 
+export interface UserMetadata {
+    username: string;
+    verified: boolean;
+    mfa_enabled: boolean;
+    id: string;
+    avatar: string;
+    discriminator: string;
+    email: string;
+}
+
 export interface DropdownField extends ClientField {
     type: "dropdown" | "radio";
     choices: string[];

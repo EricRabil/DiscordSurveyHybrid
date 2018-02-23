@@ -5,7 +5,7 @@ import * as rp from "request-promise";
 import { inspect } from "util";
 import { User } from "../../../db/entities/User";
 import { AuthorizedGuard } from "../../../guards";
-import { AboutMeRequest } from "../../../http/types/api";
+import { AboutMeRequest, UserMetadata } from "../../../http/types/api";
 
 interface AuthentiationGrant {
     access_token: string;
@@ -13,16 +13,6 @@ interface AuthentiationGrant {
     expires_in: number;
     refresh_token: string;
     scope: string;
-}
-
-interface UserMetadata {
-    username: string;
-    verified: boolean;
-    mfa_enabled: boolean;
-    id: string;
-    avatar: string;
-    discriminator: string;
-    email: string;
 }
 
 export = [
@@ -52,11 +42,7 @@ export = [
             const aboutYou: UserMetadata = JSON.parse(await rp.get("https://discordapp.com/api/v6/users/@me", {headers: {Authorization: restToken}}));
             
             const user = await User.getOrCreateUser(aboutYou.id);
-            user.username = aboutYou.username;
-            user.verified = aboutYou.verified;
-            user.mfa_enabled = aboutYou.mfa_enabled;
-            user.discriminator = aboutYou.discriminator;
-            user.email = aboutYou.email;
+            user.merge(aboutYou);
             await user.save();
 
             const token = await user.createToken();

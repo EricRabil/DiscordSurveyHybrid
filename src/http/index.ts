@@ -8,6 +8,7 @@ import * as path from "path";
 import { logger } from "../util/logger";
 import { getUser } from "../util/hashing";
 import { Config } from "../config";
+import { loadDirectory } from "../util/iokit";
 
 const cookieParser = require("cookie-parser");
 
@@ -111,7 +112,7 @@ export class ExpressServer {
             }
             next();
         });
-        await this.loadDirectory(routesPath);
+        await loadDirectory(routesPath, this.loadRoute.bind(this));
         this.server.use("/public", express.static(path.join(process.cwd(), "public")));
         this.server.use((req, res, next) => {
             res.status(404).json({code: 404, message: "404: Not found."});
@@ -151,44 +152,5 @@ export class ExpressServer {
             };
             next();
         });
-    }
-
-    private async loadFile(filePath: string): Promise<void> {
-        if (!filePath.endsWith(".js")) {
-            return;
-        }
-        let rawFile: any = require(filePath);
-        if (Array.isArray(rawFile)) {
-            const recursivePromises: Array<Promise<void>> = [];
-            for (const rawRoute of rawFile) {
-                recursivePromises.push(this.loadRoute(rawRoute));
-            }
-            await Promise.all(recursivePromises);
-            return;
-        } else {
-            await this.loadRoute(rawFile);
-            return;
-        }
-    }
-
-    private async loadDirectory(directory: string): Promise<void> {
-        const contents = await fs.readdir(directory);
-        const recursivePromises: Array<Promise<void>> = [];
-        for (const content of contents) {
-            const itemPath = path.join(directory, content);
-            let isFile: boolean = false;
-            try {
-                const itemStats = await fs.stat(itemPath);
-                if (!itemStats.isFile()) {
-                    recursivePromises.push(this.loadDirectory(itemPath));
-                    continue;
-                }
-                recursivePromises.push(this.loadFile(itemPath));
-            } catch (e) {
-                logger.warn(`Couldn't load route(s) from ${itemPath}`);
-                continue;
-            }
-        }
-        await Promise.all(recursivePromises);
     }
 }
