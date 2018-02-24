@@ -3,6 +3,14 @@ block dependencies
     - css = [];
 block content
     div.vertical-center
-        div.container
-            h1.h1 Please login to discord.
-            a(href=config.auth.authURL) click here
+        div.container.boxed.narrow-box.border-accent
+            h1 Welcome
+            p #{config.meta.splashIntroduction}
+            h3 Requirements
+            ul
+                if config.auth.enforceGuildRequirment
+                    li Be in our discord guild
+                each requirement in config.meta.requirements
+                    li= requirement
+            p Think you meet the critera above? 
+            a(href=config.auth.authURL).btn.btn-primary Log in with discord »

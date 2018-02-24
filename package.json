@@ -1,5 +1,5 @@
 {
-  "name": "jailbreakmodapplications",
+  "name": "DiscordSurveyHybrid",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/EricRabil/JailbreakModApplications.git"
+    "url": "git+https://github.com/EricRabil/DiscordSurveyHybrid.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/EricRabil/JailbreakModApplications/issues"
+    "url": "https://github.com/EricRabil/DiscordSurveyHybrid/issues"
   },
-  "homepage": "https://github.com/EricRabil/JailbreakModApplications#readme",
+  "homepage": "https://github.com/EricRabil/DiscordSurveyHybrid#readme",
   "dependencies": {
     "cookie-parser": "^1.4.3",
     "cors": "^2.8.4",

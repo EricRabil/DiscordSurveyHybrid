@@ -1,9 +1,10 @@
 extends ./layout
 block dependencies
-    - css = [];
+    - css = ["public/form.css"];
+    - js = ["public/form.js"];
 block content
     div.vertical-center
-        div.container(id="container")
+        div.container(id="form-container").boxed.border-accent
             header.bg-white
                 h1.h1.mb-3 
                     | Hello, #{user.username}

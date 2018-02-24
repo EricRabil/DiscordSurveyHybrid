@@ -115,6 +115,8 @@ let appConfig = deepmerge({
     secret: "very-secret",
     meta: {
         siteName: "Applications",
+        splashIntroduction: "Welcome to the trusted developer program applications! Some more text here, lmao this is even more text. Even more text. More text. Some more. And finally, more text.",
+        requirements: ["Have the developer role", "Be an experienced developer", "Another arbitary limiation goes here!"],
         leadText: "Apply for the trusted developer role, and get perks."
     }
 }, configFile as {}, {arrayMerge: overwriteMerge});

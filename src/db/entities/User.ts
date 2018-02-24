@@ -46,6 +46,12 @@ export class User extends BaseEntity {
         return Config.api.allowMultiSubmission || (await this.submissionCount()) === 0;
     }
 
+    public inGuild(): boolean {
+        if (!Config.auth.enforceGuildRequirement || !Config.auth.requiredGuild) return true;
+        if (!this.guilds) return false;
+        return (this.guilds.includes(Config.auth.requiredGuild || ""));
+    }
+
     public async submit(application: Application): Promise<boolean> {
         if (!(await this.canSubmit())) {
             return false;

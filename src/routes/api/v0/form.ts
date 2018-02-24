@@ -1,7 +1,7 @@
 import { Route } from "../../../http/types/route";
 import { Config } from "../../../config";
 import { validate, getError, allFields } from "../../../util/dynamicElement";
-import { AuthorizedGuard, InRequiredGuild, CanSubmitGuard } from "../../../guards";
+import { AuthorizedGuard, CanSubmitGuard } from "../../../guards";
 import { Application, Field } from "../../../db/entities/Application";
 import { APIFormError, APIBasicError, FormCreateSuccess, FieldRequest } from "../../../http/types/api";
 import { Framework } from "../../..";
@@ -23,7 +23,7 @@ export = [
         opts: {
             method: "get",
             path: "/api/v0/form/fields",
-            guards: [AuthorizedGuard, InRequiredGuild, CanSubmitGuard]
+            guards: [AuthorizedGuard, CanSubmitGuard]
         },
         handler(req, res) {
             res.json(Config.fields as FieldRequest);
@@ -32,7 +32,7 @@ export = [
         opts: {
             method: "post",
             path: "/api/v0/form/validate",
-            guards: [AuthorizedGuard, InRequiredGuild, CanSubmitGuard]
+            guards: [AuthorizedGuard, CanSubmitGuard]
         },
         async handler(req, res) {
             const {errors, errorCount} = await computeErrors(req.body);
@@ -47,7 +47,7 @@ export = [
         opts: {
             method: "post",
             path: "/api/v0/form/submit",
-            guards: [AuthorizedGuard, InRequiredGuild, CanSubmitGuard]
+            guards: [AuthorizedGuard, CanSubmitGuard]
         },
         async handler(req, res) {
             const {errors, errorCount} = await computeErrors(req.body);
